@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Timed Assessment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    
+    .banner {
+      background-color: #f2f2f2;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .correct-answer {
+      background-color: #99ff99;
+    }
+    
+    .wrong-answer {
+      background-color: #ff9999;
+    }
+  </style>
+</head>
+<body>
+  <h1>Timed Assessment</h1>
+  
+  <div id="timer"></div>
+  
+  <form id="assessmentForm">
+    <div class="banner">
+      <p>1) Which of the following states of matter have its particle arrangement mostly touching?</p>
+      <input type="radio" name="q1" value="A"> A. Liquids<br>
+      <input type="radio" name="q1" value="B"> B. Gases<br>
+      <input type="radio" name="q1" value="C"> C. Solids<br>
+      <input type="radio" name="q1" value="D"> D. Plasma<br>
+    </div>
+
+    <div class="banner">
+      <p>2) Which of the following is the product formed when NH3 and HCl diffused together?</p>
+      <input type="radio" name="q2" value="A"> A. NH2Cl<br>
+      <input type="radio" name="q2" value="B"> B. Nh4cL<br>
+      <input type="radio" name="q2" value="C"> C. NH4Cl<br>
+      <input type="radio" name="q2" value="D"> D. NCl<br>
+    </div>
+
+    <div class="banner">
+      <p>3) If Substance A has a melting point of 890*C and a boiling point of 1000*C. What would be the state of Susbstance A if its in an environment heated at 889*C?</p>
+      <input type="radio" name="q3" value="A"> A. Liquid<br>
+      <input type="radio" name="q3" value="B"> B. Gas<br>
+      <input type="radio" name="q3" value="C"> C. Solid<br>
+    </div>
+    
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    var startTime = new Date().getTime();
+    var timerElement = document.getElementById("timer");
+
+    // Update the timer every second
+    var timerInterval = setInterval(function() {
+      var now = new Date().getTime();
+      var elapsedTime = now - startTime;
+      var secondsRemaining = 300 - Math.floor(elapsedTime / 1000);
+
+      // Display the remaining time in minutes and seconds
+      var minutes = Math.floor(secondsRemaining / 60);
+      var seconds = secondsRemaining % 60;
+      timerElement.innerHTML = "Time Remaining: " + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
+
+      // If the time is up, stop the timer and submit the form
+      if (secondsRemaining <= 0) {
+        clearInterval(timerInterval);
+        document.getElementById("assessmentForm").submit();
+      }
+    }, 1000);
+
+    document.getElementById("assessmentForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      clearInterval(timerInterval);
+      checkAnswers();
+    });
+
+    function checkAnswers() {
+      var form = document.getElementById("assessmentForm");
+
+      var answer1 = form.elements.q1.value;
+      var answer2 = form.elements.q2.value;
+      var answer3 = form.elements.q3.value;
+
+      var correctAnswers = {
+        q1: "A",
+        q2: "C",
+        q3: "C"
+      };
+
+      if (answer1 === correctAnswers.q1) {
+        form.q1.parentNode.classList.add("correct-answer");
+      } else {
+        form.q1.nextElementSibling.classList.add("correct-answer");
+        form.q1.parentNode.classList.add("wrong-answer");
+      }
+
+      if (answer2 === correctAnswers.q2) {
+        form.q2.parentNode.classList.add("correct-answer");
+      } else {
+        form.q2.nextElementSibling.classList.add("correct-answer");
+        form.q2.parentNode.classList.add("wrong-answer");
+      }
+
+      if (answer3 === correctAnswers.q3) {
+        form.q3.parentNode.classList.add("correct-answer");
+      } else {
+        form.q3.nextElementSibling.classList.add("correct-answer");
+        form.q3.parentNode.classList.add("wrong-answer");
+      }
+    }
+  </script>
+</body>
+</html>
